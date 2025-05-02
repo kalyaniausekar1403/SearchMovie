@@ -7,9 +7,13 @@ object RetrotfitInstance {
 
     fun retrofitInstance() : Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://www.omdbapi.com/")
+            .baseUrl("https://www.omdbapi.com")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+    }
+
+    val api: ApiInterface by lazy {
+        retrofitInstance().create(ApiInterface::class.java)
     }
 }
 

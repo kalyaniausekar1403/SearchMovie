@@ -1,73 +1,51 @@
 package com.kalyani.searchmovie
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import com.kalyani.searchmovie.model.Search
-import com.kalyani.searchmovie.model.SearchMovieResponse
-import com.kalyani.searchmovie.remote.ApiInterface
-import com.kalyani.searchmovie.remote.RetrotfitInstance
-import retrofit2.Call
-import retrofit2.Response
+import androidx.core.widget.doAfterTextChanged
+import com.kalyani.searchmovie.viewmodel.MovieViewModel
 
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var apiInterface: ApiInterface
-    private lateinit var searchview: SearchView
-    private lateinit var movieAdapter : ArrayAdapter<Search>
-    var searchList: ArrayList<Search> = ArrayList<Search>()
+    private val viewModel : MovieViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-        searchview = findViewById<SearchView>(R.id.search)
-        apiInterface = RetrotfitInstance.retrofitInstance().create(ApiInterface::class.java)
-        movieAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1,searchList)
 
+        val searchText = findViewById<AutoCompleteTextView>(R.id.movieName)
 
-
-        searchview.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                searchMovie(query!!)
-                return true
+        searchText.doAfterTextChanged { text ->
+            val query = text.toString()
+            if (query.length >= 3) {
+                viewModel.getMovies(query)
             }
+        }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                movieAdapter.filter.filter(newText)
-                return false
+        viewModel.movies.observe(this) { movieList ->
+            val titles = movieList.map { it.Title }
+            val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, titles)
+            searchText.setAdapter(adapter)
 
-            }
-
-        })
-
-
-    }
-
-    fun searchMovie(search: String) {
-
-            val call = apiInterface.getMovieBySearch(search,1)
-            call.enqueue(object : retrofit2.Callback<List<SearchMovieResponse>> {
-                override fun onResponse(
-                    p0: Call<List<SearchMovieResponse>>,
-                    response: Response<List<SearchMovieResponse>>
-                ) {
-                    if (response.isSuccessful) {
-                        Log.d("TAG", "onResponse: $response")
-                    }
-                }
-
-                override fun onFailure(p0: Call<List<SearchMovieResponse>>, p1: Throwable) {
-                    TODO("Not yet implemented")
-                }
-
-
-            })
-
+//            searchText.setOnItemClickListener { _, _, position, _ ->
+//                val selectedMovie = movieList[position]
+//                val intent = Intent(this, MovieDetailsActivity::class.java)
+//                //intent.putExtra("movie", selectedMovie)
+//                startActivity(intent)
+//            }
+        }
+        viewModel.error.observe(this) {
+            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+        }
     }
 
 }
