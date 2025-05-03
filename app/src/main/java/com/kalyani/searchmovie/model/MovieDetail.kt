@@ -1,6 +1,6 @@
 package com.kalyani.searchmovie.model
 
-data class Search(
+data class MovieDetail(
     val Poster: String,
     val Title: String,
     val Type: String,

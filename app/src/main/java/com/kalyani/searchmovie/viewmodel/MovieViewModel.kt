@@ -1,33 +1,33 @@
 package com.kalyani.searchmovie.viewmodel
 
-import androidx.lifecycle.LiveData
+
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.kalyani.searchmovie.model.Search
-import com.kalyani.searchmovie.repository.MovieRepository
+import androidx.lifecycle.viewModelScope
+import com.kalyani.searchmovie.model.MovieDetail
+import com.kalyani.searchmovie.remote.RetrotfitInstance
+import kotlinx.coroutines.launch
 
 class MovieViewModel() : ViewModel() {
 
-    private val repository = MovieRepository()
+    val movieListLiveData = MutableLiveData<List<MovieDetail>>()
+    private val apiKey = "5b5ecd89"
 
-    private val _movies = MutableLiveData<List<Search>>()
-    val movies: LiveData<List<Search>> = _movies
-
-    private val _error = MutableLiveData<String>()
-    val error: LiveData<String> = _error
-
-    fun getMovies(query:String, page:Int = 1) {
-        try {
-
-            val response = repository.searchMovies(query,page)
-            if (response.Response == "True") {
-                _movies.value = response.Search ?: emptyList()
+    suspend fun searchMovies(query: String) {
+        viewModelScope.launch {
+            try {
+                val response = RetrotfitInstance.api.searchMovies(query,1,apiKey)
+                Log.d("API_RESPONSE", response.toString()) // ✅ Add this
+                if (response.Response == "True") {
+                    movieListLiveData.value = response.Search ?: emptyList()
+                } else {
+                    movieListLiveData.value = emptyList()
+                }
+            } catch (e: Exception) {
+                Log.e("API_ERROR", e.message ?: "Error")
+                movieListLiveData.value = emptyList()
             }
-            else {
-                _error.value = "No Movies Found"
-            }
-        }catch (e:Exception) {
-            e.printStackTrace()
         }
     }
 }
