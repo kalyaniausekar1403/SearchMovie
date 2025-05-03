@@ -1,7 +1,7 @@
 package com.kalyani.searchmovie.model
 
-data class SearchMovieResponse(
+data class MovieResponse(
     val Response: String,
-    val Search: List<Movie>,
+    val Search: List<Search>,
     val totalResults: String
 )

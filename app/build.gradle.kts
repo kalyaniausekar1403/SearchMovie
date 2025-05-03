@@ -58,4 +58,7 @@ dependencies {
     // Lifecycle (ViewModel and LiveData)
     implementation (libs.androidx.lifecycle.viewmodel.ktx)
     implementation (libs.androidx.lifecycle.livedata.ktx)
+
+    // pagination
+    implementation(libs.androidx.paging.runtime)
 }

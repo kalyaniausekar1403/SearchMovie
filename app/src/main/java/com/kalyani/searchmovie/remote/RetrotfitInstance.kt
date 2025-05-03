@@ -12,8 +12,18 @@ object RetrotfitInstance {
             .build()
     }
 
-    val api: ApiInterface by lazy {
-        retrofitInstance().create(ApiInterface::class.java)
+    val api: ApiService by lazy {
+        retrofitInstance().create(ApiService::class.java)
+    }
+}
+
+// another way
+object RetrofitInstance {
+    val api: ApiService by lazy {
+        Retrofit.Builder()
+            .baseUrl("https://www.omdbapi.com")
+            .build()
+            .create(ApiService::class.java) // crete api service class here
     }
 }
 
