@@ -1,4 +1,4 @@
-package com.kalyani.searchmovie.model
+package com.kalyani.searchmovie.data.model
 
 data class MovieDetail(
     val Poster: String,

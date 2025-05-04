@@ -1,5 +1,6 @@
 package com.kalyani.searchmovie
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.EditText
@@ -11,7 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kalyani.searchmovie.adapter.MoviesAdapter
-import com.kalyani.searchmovie.viewmodel.MovieViewModel
+import com.kalyani.searchmovie.ui.viewmodel.MovieViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -33,7 +34,13 @@ class MainActivity : AppCompatActivity() {
         etSearch = findViewById(R.id.etSearch)
         recyclerView = findViewById(R.id.recyclerView)
 
-        adapter = MoviesAdapter()
+        adapter = MoviesAdapter { selectedMovie ->
+
+            val intent = Intent(this, MovieDetailsActivity::class.java)
+            intent.putExtra("movie_title", selectedMovie.Title)
+            startActivity(intent)
+
+        }
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
@@ -42,6 +49,8 @@ class MainActivity : AppCompatActivity() {
         viewModel.movieListLiveData.observe(this@MainActivity, Observer { list ->
             adapter.submitList(list)
         })
+
+
         // 🔍 Realtime search with debounce
         etSearch.addTextChangedListener {
             searchJob?.cancel()

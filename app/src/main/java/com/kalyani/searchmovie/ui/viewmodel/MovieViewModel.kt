@@ -1,12 +1,12 @@
-package com.kalyani.searchmovie.viewmodel
+package com.kalyani.searchmovie.ui.viewmodel
 
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kalyani.searchmovie.model.MovieDetail
-import com.kalyani.searchmovie.remote.RetrotfitInstance
+import com.kalyani.searchmovie.data.model.MovieDetail
+import com.kalyani.searchmovie.data.remote.RetrotfitInstance
 import kotlinx.coroutines.launch
 
 class MovieViewModel() : ViewModel() {
@@ -18,7 +18,7 @@ class MovieViewModel() : ViewModel() {
         viewModelScope.launch {
             try {
                 val response = RetrotfitInstance.api.searchMovies(query,1,apiKey)
-                Log.d("API_RESPONSE", response.toString()) // ✅ Add this
+                Log.d("API_RESPONSE", response.toString()) //  Add this
                 if (response.Response == "True") {
                     movieListLiveData.value = response.Search ?: emptyList()
                 } else {

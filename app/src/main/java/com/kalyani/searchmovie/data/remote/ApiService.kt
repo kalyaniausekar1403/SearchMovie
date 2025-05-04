@@ -1,7 +1,7 @@
-package com.kalyani.searchmovie.remote
+package com.kalyani.searchmovie.data.remote
 
-import com.kalyani.searchmovie.model.MovieDetail
-import com.kalyani.searchmovie.model.MovieResponse
+import com.kalyani.searchmovie.data.model.MovieDetail
+import com.kalyani.searchmovie.data.model.MovieResponse
 import retrofit2.http.GET
 
 

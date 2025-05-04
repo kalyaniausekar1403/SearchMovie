@@ -1,4 +1,4 @@
-package com.kalyani.searchmovie.remote
+package com.kalyani.searchmovie.data.remote
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -19,14 +19,3 @@ object RetrotfitInstance {
         retrofitInstance().create(ApiService::class.java)
     }
 }
-
-/*// another way
-object RetrofitInstance {
-    val api: ApiService by lazy {
-        Retrofit.Builder()
-            .baseUrl("https://www.omdbapi.com")
-            .build()
-            .create(ApiService::class.java) // crete api service class here
-    }
-}*/
-

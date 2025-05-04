@@ -1,7 +1,7 @@
-package com.kalyani.searchmovie.repository
+package com.kalyani.searchmovie.data.repository
 
-import com.kalyani.searchmovie.model.MovieResponse
-import com.kalyani.searchmovie.remote.RetrotfitInstance
+import com.kalyani.searchmovie.data.model.MovieResponse
+import com.kalyani.searchmovie.data.remote.RetrotfitInstance
 
 class MovieRepository {
 

@@ -3,13 +3,14 @@
     android:padding="8dp"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:id="@+id/parentLayout">
 
-    <!--<ImageView
+    <ImageView
         android:id="@+id/ivPoster"
         android:layout_width="80dp"
         android:layout_height="120dp"
-        android:scaleType="centerCrop" />-->
+        android:scaleType="centerCrop" />
 
     <TextView
         android:id="@+id/tvTitle"
